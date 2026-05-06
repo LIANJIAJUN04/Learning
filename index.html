@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Hub</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --card: #22263a;
+      --accent: #6c63ff;
+      --accent-light: #a29bfe;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --green: #43e97b;
+      --yellow: #f9ca24;
+      --red: #ff6b6b;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid rgba(108, 99, 255, 0.2);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-left: 1.5rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent-light); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(108, 99, 255, 0.15) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(108, 99, 255, 0.15);
+      border: 1px solid rgba(108, 99, 255, 0.4);
+      color: var(--accent-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.7rem 1.6rem;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(108, 99, 255, 0.4);
+    }
+
+    .btn-primary:hover { box-shadow: 0 6px 28px rgba(108, 99, 255, 0.55); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.35); }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      padding: 2.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .stat-item { text-align: center; }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent-light);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .section-link {
+      font-size: 0.85rem;
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    .section-link:hover { text-decoration: underline; }
+
+    /* ── PROGRESS CARD ── */
+    .progress-banner {
+      background: linear-gradient(135deg, var(--card) 0%, rgba(108, 99, 255, 0.2) 100%);
+      border: 1px solid rgba(108, 99, 255, 0.25);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .progress-text h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+    .progress-text p  { font-size: 0.85rem; color: var(--muted); }
+
+    .progress-bar-wrap {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    }
+
+    /* ── COURSE GRID ── */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .course-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .course-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(108, 99, 255, 0.4);
+    }
+
+    .card-banner {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .card-body { padding: 1.2rem; }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-green  { background: rgba(67, 233, 123, 0.15); color: var(--green); }
+    .tag-yellow { background: rgba(249, 202, 36, 0.15); color: var(--yellow); }
+    .tag-red    { background: rgba(255, 107, 107, 0.15); color: var(--red); }
+    .tag-blue   { background: rgba(108, 99, 255, 0.15); color: var(--accent-light); }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lessons-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .mini-progress {
+      height: 4px;
+      width: 80px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    }
+
+    /* ── TOPICS TABLE ── */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .topic-item {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .topic-item:hover { background: rgba(108, 99, 255, 0.1); }
+
+    .topic-icon {
+      font-size: 1.4rem;
+      width: 36px;
+      text-align: center;
+    }
+
+    .topic-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .topic-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Learn<span>Hub</span></div>
+    <nav>
+      <a href="#" class="active">Home</a>
+      <a href="#">Courses</a>
+      <a href="#">Topics</a>
+      <a href="#">Progress</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Start Learning Today</div>
+    <h1>Build Skills That<br>Actually Matter</h1>
+    <p>Structured lessons, hands-on practice, and a clear path from beginner to confident developer.</p>
+    <div class="hero-actions">
+      <a href="#courses" class="btn btn-primary">Browse Courses</a>
+      <a href="#topics" class="btn btn-outline">Explore Topics</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-value">24</div>
+      <div class="stat-label">Courses</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">180+</div>
+      <div class="stat-label">Lessons</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">8</div>
+      <div class="stat-label">Topics</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">Free</div>
+      <div class="stat-label">Always</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- PROGRESS BANNER -->
+    <div class="progress-banner">
+      <div class="progress-text">
+        <h3>Continue where you left off</h3>
+        <p>HTML &amp; CSS Fundamentals — Module 3</p>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label">
+          <span>Overall progress</span>
+          <span>42%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 42%"></div>
+        </div>
+      </div>
+      <a href="#" class="btn btn-primary">Resume</a>
+    </div>
+
+    <!-- COURSES -->
+    <div id="courses">
+      <div class="section-header">
+        <h2 class="section-title">Featured Courses</h2>
+        <a href="#" class="section-link">View all →</a>
+      </div>
+
+      <div class="course-grid">
+
+        <!-- Card 1 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">🌐</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-green">Beginner</span>
+              <span class="tag tag-blue">HTML / CSS</span>
+            </div>
+            <div class="card-title">HTML &amp; CSS Fundamentals</div>
+            <div class="card-desc">Learn to structure and style web pages from the ground up. No prior experience needed.</div>
+            <div class="card-footer">
+              <span class="lessons-count">12 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 60%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #1a2a1a, #1e3a1e);">⚡</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-yellow">Intermediate</span>
+              <span class="tag tag-blue">JavaScript</span>
+            </div>
+            <div class="card-title">JavaScript Essentials</div>
+            <div class="card-desc">Master core JS concepts — variables, functions, DOM manipulation, and async programming.</div>
+            <div class="card-footer">
+              <span class="lessons-count">18 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 25%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #2a1a1a, #3a1e1e);">🐍</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-green">Beginner</span>
+              <span class="tag tag-blue">Python</span>
+            </div>
+            <div class="card-title">Python for Beginners</div>
+            <div class="card-desc">From variables to loops, functions and files — a gentle introduction to programming logic.</div>
+            <div class="card-footer">
+              <span class="lessons-count">15 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #1a1a2e, #2a1a3e);">🗄️</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-yellow">Intermediate</span>
+              <span class="tag tag-blue">Databases</span>
+            </div>
+            <div class="card-title">SQL &amp; Databases</div>
+            <div class="card-desc">Design schemas, write queries, and understand how relational databases store and retrieve data.</div>
+            <div class="card-footer">
+              <span class="lessons-count">10 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #1a2a2a, #1e3a3a);">⚛️</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-red">Advanced</span>
+              <span class="tag tag-blue">React</span>
+            </div>
+            <div class="card-title">React &amp; Modern Frontend</div>
+            <div class="card-desc">Components, hooks, state management and building production-ready single-page applications.</div>
+            <div class="card-footer">
+              <span class="lessons-count">22 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="course-card">
+          <div class="card-banner" style="background: linear-gradient(135deg, #1a2020, #1e3030);">🔧</div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="tag tag-yellow">Intermediate</span>
+              <span class="tag tag-blue">Git</span>
+            </div>
+            <div class="card-title">Git &amp; Version Control</div>
+            <div class="card-desc">Commits, branches, merging, rebasing and collaborating with teams on GitHub.</div>
+            <div class="card-footer">
+              <span class="lessons-count">8 lessons</span>
+              <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TOPICS -->
+    <div id="topics">
+      <div class="section-header">
+        <h2 class="section-title">Browse by Topic</h2>
+        <a href="#" class="section-link">View all →</a>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-item">
+          <div class="topic-icon">🌐</div>
+          <div>
+            <div class="topic-name">Web Dev</div>
+            <div class="topic-count">6 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">🐍</div>
+          <div>
+            <div class="topic-name">Python</div>
+            <div class="topic-count">4 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">🗄️</div>
+          <div>
+            <div class="topic-name">Databases</div>
+            <div class="topic-count">3 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">🔐</div>
+          <div>
+            <div class="topic-name">Security</div>
+            <div class="topic-count">2 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">📱</div>
+          <div>
+            <div class="topic-name">Mobile</div>
+            <div class="topic-count">2 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">🤖</div>
+          <div>
+            <div class="topic-name">AI / ML</div>
+            <div class="topic-count">3 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">⚙️</div>
+          <div>
+            <div class="topic-name">DevOps</div>
+            <div class="topic-count">2 courses</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-icon">🔧</div>
+          <div>
+            <div class="topic-name">Tools</div>
+            <div class="topic-count">2 courses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2026 LearnHub — Built with HTML &amp; CSS
+  </footer>
+
+</body>
+</html>
